@@ -94,7 +94,7 @@ describe('Things Endpoints', function() {
         const thingId = 123456
         return supertest(app)
           .get(`/api/things/${thingId}`)
-          .set('Authorization', `Basic ${helpers.makeAuthHeader(testUsers[0])}`)
+          .set('Authorization', `Bearer ${helpers.makeAuthHeader(testUsers[0])}`)
           .expect(404, { error: `Thing doesn't exist` })
       })
     })
@@ -119,7 +119,7 @@ describe('Things Endpoints', function() {
 
         return supertest(app)
           .get(`/api/things/${thingId}`)
-          .set('Authorization', `Basic ${helpers.makeAuthHeader(testUsers[0])}`)
+          .set('Authorization', `Bearer ${helpers.makeAuthHeader(testUsers[0])}`)
           .expect(200, expectedThing)
       })
     })
@@ -142,7 +142,7 @@ describe('Things Endpoints', function() {
       it('removes XSS attack content', () => {
         return supertest(app)
           .get(`/api/things/${maliciousThing.id}`)
-          .set('Authorization', `Basic ${helpers.makeAuthHeader(testUser)}`)
+          .set('Authorization', `Bearer ${helpers.makeAuthHeader(testUser)}`)
           .expect(200)
           .expect(res => {
             expect(res.body.title).to.eql(expectedThing.title)
@@ -161,7 +161,7 @@ describe('Things Endpoints', function() {
         const thingId = 123456
         return supertest(app)
           .get(`/api/things/${thingId}/reviews`)
-          .set('Authorization', `Basic ${helpers.makeAuthHeader(testUsers[0])}`)
+          .set('Authorization', `Bearer ${helpers.makeAuthHeader(testUsers[0])}`)
           .expect(404, { error: `Thing doesn't exist` })
       })
     })
@@ -184,7 +184,7 @@ describe('Things Endpoints', function() {
 
         return supertest(app)
           .get(`/api/things/${thingId}/reviews`)
-          .set('Authorization', `Basic ${helpers.makeAuthHeader(testUsers[0])}`)
+          .set('Authorization', `Bearer ${helpers.makeAuthHeader(testUsers[0])}`)
           .expect(200, expectedReviews)
       })
     })
