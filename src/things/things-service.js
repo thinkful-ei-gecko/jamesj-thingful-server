@@ -12,23 +12,11 @@ const ThingsService = {
         'thg.content',
         'thg.image',
         ...userFields,
-        db.raw(
-          `count(DISTINCT rev) AS number_of_reviews`
-        ),
-        db.raw(
-          `AVG(rev.rating) AS average_review_rating`
-        ),
+        db.raw(`count(DISTINCT rev) AS number_of_reviews`),
+        db.raw(`AVG(rev.rating) AS average_review_rating`)
       )
-      .leftJoin(
-        'thingful_reviews AS rev',
-        'thg.id',
-        'rev.thing_id',
-      )
-      .leftJoin(
-        'thingful_users AS usr',
-        'thg.user_id',
-        'usr.id',
-      )
+      .leftJoin('thingful_reviews AS rev', 'thg.id', 'rev.thing_id')
+      .leftJoin('thingful_users AS usr', 'thg.user_id', 'usr.id')
       .groupBy('thg.id', 'usr.id')
   },
 
@@ -46,14 +34,10 @@ const ThingsService = {
         'rev.rating',
         'rev.text',
         'rev.date_created',
-        ...userFields,
+        ...userFields
       )
       .where('rev.thing_id', thing_id)
-      .leftJoin(
-        'thingful_users AS usr',
-        'rev.user_id',
-        'usr.id',
-      )
+      .leftJoin('thingful_users AS usr', 'rev.user_id', 'usr.id')
       .groupBy('rev.id', 'usr.id')
   },
 
@@ -67,7 +51,7 @@ const ThingsService = {
     // Some light hackiness to allow for the fact that `treeize`
     // only accepts arrays of objects, and we want to use a single
     // object.
-    const thingData = thingTree.grow([ thing ]).getData()[0]
+    const thingData = thingTree.grow([thing]).getData()[0]
 
     return {
       id: thingData.id,
@@ -91,7 +75,7 @@ const ThingsService = {
     // Some light hackiness to allow for the fact that `treeize`
     // only accepts arrays of objects, and we want to use a single
     // object.
-    const reviewData = reviewTree.grow([ review ]).getData()[0]
+    const reviewData = reviewTree.grow([review]).getData()[0]
 
     return {
       id: reviewData.id,

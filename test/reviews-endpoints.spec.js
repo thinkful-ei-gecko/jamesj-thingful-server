@@ -5,10 +5,7 @@ const helpers = require('./test-helpers')
 describe('Reviews Endpoints', function() {
   let db
 
-  const {
-    testThings,
-    testUsers,
-  } = helpers.makeThingsFixtures()
+  const { testThings, testUsers } = helpers.makeThingsFixtures()
 
   before('make knex instance', () => {
     db = knex({
@@ -26,11 +23,7 @@ describe('Reviews Endpoints', function() {
 
   describe(`POST /api/reviews`, () => {
     beforeEach('insert things', () =>
-      helpers.seedThingsTables(
-        db,
-        testUsers,
-        testThings,
-      )
+      helpers.seedThingsTables(db, testUsers, testThings)
     )
 
     it(`creates a review, responding with 201 and the new review`, function() {

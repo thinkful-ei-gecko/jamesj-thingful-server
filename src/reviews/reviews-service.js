@@ -24,11 +24,7 @@ const ReviewsService = {
           ) AS "user"`
         )
       )
-      .leftJoin(
-        'thingful_users AS usr',
-        'rev.user_id',
-        'usr.id',
-      )
+      .leftJoin('thingful_users AS usr', 'rev.user_id', 'usr.id')
       .where('rev.id', id)
       .first()
   },
@@ -39,9 +35,7 @@ const ReviewsService = {
       .into('thingful_reviews')
       .returning('*')
       .then(([review]) => review)
-      .then(review =>
-        ReviewsService.getById(db, review.id)
-      )
+      .then(review => ReviewsService.getById(db, review.id))
   },
 
   serializeReview(review) {
@@ -53,7 +47,7 @@ const ReviewsService = {
       date_created: review.date_created,
       user: review.user || {},
     }
-  }
+  },
 }
 
 module.exports = ReviewsService

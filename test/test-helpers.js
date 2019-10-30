@@ -1,5 +1,5 @@
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 function makeUsersArray() {
   return [
@@ -46,7 +46,8 @@ function makeThingsArray(users) {
       image: 'http://placehold.it/500x500',
       user_id: users[0].id,
       date_created: '2029-01-22T16:28:32.615Z',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
       id: 2,
@@ -54,7 +55,8 @@ function makeThingsArray(users) {
       image: 'http://placehold.it/500x500',
       user_id: users[1].id,
       date_created: '2029-01-22T16:28:32.615Z',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
       id: 3,
@@ -62,7 +64,8 @@ function makeThingsArray(users) {
       image: 'http://placehold.it/500x500',
       user_id: users[2].id,
       date_created: '2029-01-22T16:28:32.615Z',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
       id: 4,
@@ -70,7 +73,8 @@ function makeThingsArray(users) {
       image: 'http://placehold.it/500x500',
       user_id: users[3].id,
       date_created: '2029-01-22T16:28:32.615Z',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
   ]
 }
@@ -133,15 +137,13 @@ function makeReviewsArray(users, things) {
       user_id: users[0].id,
       date_created: '2029-01-22T16:28:32.615Z',
     },
-  ];
+  ]
 }
 
-function makeExpectedThing(users, thing, reviews=[]) {
-  const user = users
-    .find(user => user.id === thing.user_id)
+function makeExpectedThing(users, thing, reviews = []) {
+  const user = users.find(user => user.id === thing.user_id)
 
-  const thingReviews = reviews
-    .filter(review => review.thing_id === thing.id)
+  const thingReviews = reviews.filter(review => review.thing_id === thing.id)
 
   const number_of_reviews = thingReviews.length
   const average_review_rating = calculateAverageReviewRating(thingReviews)
@@ -165,18 +167,15 @@ function makeExpectedThing(users, thing, reviews=[]) {
 }
 
 function calculateAverageReviewRating(reviews) {
-  if(!reviews.length) return 0
+  if (!reviews.length) return 0
 
-  const sum = reviews
-    .map(review => review.rating)
-    .reduce((a, b) => a + b)
+  const sum = reviews.map(review => review.rating).reduce((a, b) => a + b)
 
   return Math.round(sum / reviews.length)
 }
 
 function makeExpectedThingReviews(users, thingId, reviews) {
-  const expectedReviews = reviews
-    .filter(review => review.thing_id === thingId)
+  const expectedReviews = reviews.filter(review => review.thing_id === thingId)
 
   return expectedReviews.map(review => {
     const reviewUser = users.find(user => user.id === review.user_id)
@@ -191,7 +190,7 @@ function makeExpectedThingReviews(users, thingId, reviews) {
         full_name: reviewUser.full_name,
         nickname: reviewUser.nickname,
         date_created: reviewUser.date_created,
-      }
+      },
     }
   })
 }
@@ -207,7 +206,8 @@ function makeMaliciousThing(user) {
   }
   const expectedThing = {
     ...makeExpectedThing([user], maliciousThing),
-    title: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    title:
+      'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
     content: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
   }
   return {
@@ -237,46 +237,35 @@ function seedUsers(db, users) {
   const hashedUsers = users.map(user => {
     return {
       ...user,
-      password: bcryptjs.hashSync(user.password, 1)
+      password: bcryptjs.hashSync(user.password, 1),
     }
   })
   return db('thingful_users')
     .insert(hashedUsers)
-    .then(() => db
-      .raw(
-          `SELECT setval('thingful_users_id_seq', ?)`, 
-          [users[users.length - 1].id]
-        )
+    .then(() =>
+      db.raw(`SELECT setval('thingful_users_id_seq', ?)`, [
+        users[users.length - 1].id,
+      ])
     )
 }
 
-
-function seedThingsTables(db, users, things, reviews=[]) {
+function seedThingsTables(db, users, things, reviews = []) {
   return seedUsers(db, users)
-    .then(() =>
-      db
-        .into('thingful_things')
-        .insert(things)
-    )
-    .then(() =>
-      reviews.length && db.into('thingful_reviews').insert(reviews)
-    )
+    .then(() => db.into('thingful_things').insert(things))
+    .then(() => reviews.length && db.into('thingful_reviews').insert(reviews))
 }
 
 function seedMaliciousThing(db, user, thing) {
-  return seedUsers(db, [user])
-    .then(() =>
-      db
-        .into('thingful_things')
-        .insert([thing])
-    )
+  return seedUsers(db, [user]).then(() =>
+    db.into('thingful_things').insert([thing])
+  )
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-  const {user_name, id} = user;
-  return jwt.sign({user_id: id}, secret, {
+  const { user_name, id } = user
+  return jwt.sign({ user_id: id }, secret, {
     subject: user_name,
-    algorithm: 'HS256'
+    algorithm: 'HS256',
   })
 }
 
