@@ -9,6 +9,7 @@ const UsersService = {
     return db('thingful_users')
       .insert(user)
       .returning('*')
+      .then(user => user[0])
   },
 }
 
